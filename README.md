@@ -2,17 +2,18 @@
 
 Graphical interface for fdupes (find duplicates) command in linux
 
-Currently the tool has been tested on Kali >=14.04 only. The `install.sh`
-script is likewise.
+Currently the tool and `install.sh` have been tested on Kali >=14.04
+only.
 
 ## How to execute
 
-Install the provided script. Run `gfdupes`
+1. run `install.sh`
+2. run `gfdupes`
 
 ## Requirements
 
 * Python (>=2.0)
-* pygtk( >=2.0)
+* pygtk (>=2.0)
 * gtk
 * fdupes
 
