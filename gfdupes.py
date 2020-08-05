@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 '''
-* gfdupes - A graphical frontend (and a slight addition) to fdupes, the utility * to find duplicate files in a directory
+* gfdupes - A graphical frontend (and a slight addition) to fdupes, the
+  utility to find duplicate files in a directory
 
 * Copyright 2015 :
-		 Abhilash Mhaisne <55abhilash@openmailbox.org>
-    		 Vaibhav Kurhe <vaibhav.kurhe@gmail.com>
-    		 Ajinkya Panaskar <panaskar.ajinkya@outlook.com>
+  Abhilash Mhaisne <55abhilash@openmailbox.org>
+  Vaibhav Kurhe <vaibhav.kurhe@gmail.com>
+  Ajinkya Panaskar <panaskar.ajinkya@outlook.com>
 
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -27,40 +28,40 @@ import os
 import subprocess
 
 def delete_event(widget, data=None): # Delete and destroy
-	return False		     # events 	
+    return False # events
 def destroy(widget, data=None):
-	gtk.main_quit()
-	return False
+    gtk.main_quit()
+    return False
 
 tree_elem_path_dict = dict()
 
 def search_path_of_element(elem):
-	return tree_elem_path_dict.get(elem)
+    return tree_elem_path_dict.get(elem)
 
-def append_children(tree, app, path): 
-	if(not (os.path.isdir(path))) :              
-		return False
-	files_list = os.listdir(path)
-	no_of_files_inlist = len(files_list)
-	for child in range(no_of_files_inlist) :
-		x = tree.append(app, [files_list[child]])
-		pat = '/%s/%s' %(path, files_list[child])
-		tree_elem_path_dict[files_list[child]] = pat
-		append_children(tree,x,pat)
-#This code works!
+def append_children(tree, app, path):
+    if(not (os.path.isdir(path))) :
+        return False
+    files_list = os.listdir(path)
+    no_of_files_inlist = len(files_list)
+    for child in range(no_of_files_inlist) :
+        x = tree.append(app, [files_list[child]])
+        pat = '/%s/%s' %(path, files_list[child])
+        tree_elem_path_dict[files_list[child]] = pat
+        append_children(tree,x,pat)
+# This code works!
 x = False
-def toggle_check_button(widget, data = None):	
-	global x	
-	if widget.get_active() == True :
-		x = True
-	else :		
-		x = False
-	#print "this is toggle_Checkbutton x : ", x
-	
+def toggle_check_button(widget, data = None):
+    global x
+    if widget.get_active() == True :
+        x = True
+    else :
+        x = False
+    #print "this is toggle_Checkbutton x : ", x
+
 
 w = gtk.Window(gtk.WINDOW_TOPLEVEL) # Initialize window
-w.set_title("gfdupes")	
-w.set_border_width(20) 
+w.set_title("gfdupes")
+w.set_border_width(20)
 v2 = gtk.VBox(False, 0)
 checkbutton = gtk.CheckButton("Recurse")
 
@@ -72,17 +73,17 @@ v2.show()
 t = gtk.TreeStore(str) # Initialize tree store
 
 home = os.path.expanduser("~")
-files = os.listdir('%s' %home) 
+files = os.listdir('%s' %home)
 no_of_files = len(files)
 
 home_elem = t.append(None, [home])
 tree_elem_path_dict[home] = home
-for parent in range(no_of_files):		
-	up = t.append(home_elem, [files[parent]]) #Display the name of home folder
-	path = '%s/%s' %(home, files[parent])
-	tree_elem_path_dict[files[parent]] = path
-	if(os.path.isdir('%s/%s' %(home, files[parent]))) :
-		append_children(t, up, path)
+for parent in range(no_of_files):
+    up = t.append(home_elem, [files[parent]]) # Display the name of home folder
+    path = '%s/%s' %(home, files[parent])
+    tree_elem_path_dict[files[parent]] = path
+    if(os.path.isdir('%s/%s' %(home, files[parent]))) :
+        append_children(t, up, path)
 
 print(tree_elem_path_dict)
 # Contents of tree end here
@@ -92,65 +93,65 @@ treeview.append_column(tree_column) # Coloumn appended to the tree view
 
 cell = gtk.CellRendererText() # A cell is a single element of a coloumn
 tree_column.pack_start(cell, True) # Cell packed to tree coloumn
-tree_column.add_attribute(cell, 'text', 0) # Attribute "text" added to cell. 
+tree_column.add_attribute(cell, 'text', 0) # Attribute "text" added to cell.
 
-#treeview.set_search_column(0) 
-tree_column.set_sort_column_id(0) #We can sort the list by clicking on top of coloumn
+#treeview.set_search_column(0)
+tree_column.set_sort_column_id(0) # We can sort the list by clicking on top of coloumn
 
 treeview.set_reorderable(True)
 
 adj1 = gtk.Adjustment(0.0, 0.0, 101.0, 0.1, 1.0, 1.0)
 ''''''
 sel_item_path = []
-def on_Selection_Changed_Tree(tree_selection) : 
-	global sel_item_path	
-	(model, pathlist) = tree_selection.get_selected_rows()
-	sel_item_path = []
-    	for path in pathlist :
-    		tree_iter = model.get_iter(path)
-    		value = model.get_value(tree_iter,0)
-		sel_item_path.append(search_path_of_element(value))
-	print sel_item_path
-fdup_list = []		
+def on_Selection_Changed_Tree(tree_selection) :
+    global sel_item_path
+    (model, pathlist) = tree_selection.get_selected_rows()
+    sel_item_path = []
+    for path in pathlist :
+        tree_iter = model.get_iter(path)
+        value = model.get_value(tree_iter,0)
+    sel_item_path.append(search_path_of_element(value))
+    print sel_item_path
+fdup_list = []
 def list_dups(pathlist) :
-	global x
-	global fdup_list
-	pathlist = sel_item_path
-	fdup_out = ""
-	for path in pathlist :
-		print("%s" %path)
-		print x
-		if(os.path.isdir(path)) :
-			if x == False :			
-				fdup_out = os.popen("fdupes %s" %path).read()
-				#fdup_out1 = subprocess.check_output(fdup_out, shell=False)
-			if x == True :
-				fdup_out = os.popen("fdupes -r %s" %path).read()
-				#fdup_out1 = subprocess.check_output(fdup_out, shell=False)
-		print type(fdup_out)
-		#fdup_list = fdup_out.split('\n')
-		fdup_list = fdup_list + fdup_out.split('\n')
-		
-sel_list_path = []	
-def on_Selection_Changed_List(list_selection) : 
-	global sel_list_path	
-	(model, pathlist) = list_selection.get_selected_rows()
-    	for path in pathlist :
-    		tree_iter = model.get_iter(path)
-    		value = model.get_value(tree_iter,0)
-		sel_list_path.append(value)
-	print sel_list_path
+    global x
+    global fdup_list
+    pathlist = sel_item_path
+    fdup_out = ""
+    for path in pathlist :
+        print("%s" %path)
+        print x
+        if(os.path.isdir(path)) :
+            if x == False :
+                fdup_out = os.popen("fdupes %s" %path).read()
+                #fdup_out1 = subprocess.check_output(fdup_out, shell=False)
+            if x == True :
+                fdup_out = os.popen("fdupes -r %s" %path).read()
+                #fdup_out1 = subprocess.check_output(fdup_out, shell=False)
+        print type(fdup_out)
+        #fdup_list = fdup_out.split('\n')
+        fdup_list = fdup_list + fdup_out.split('\n')
+
+sel_list_path = []
+def on_Selection_Changed_List(list_selection) :
+    global sel_list_path
+    (model, pathlist) = list_selection.get_selected_rows()
+    for path in pathlist :
+        tree_iter = model.get_iter(path)
+        value = model.get_value(tree_iter,0)
+    sel_list_path.append(value)
+    print sel_list_path
 def rem_sel_elems(pathlist) :
-	global sel_list_path
-	pathlist = sel_list_path
-	for path in pathlist :
-		os.system("sudo rm %s" %path)
-	liststore.clear()
+    global sel_list_path
+    pathlist = sel_list_path
+    for path in pathlist :
+        os.system("sudo rm %s" %path)
+    liststore.clear()
 ''''''
 tree_selection = treeview.get_selection()
 tree_selection.set_mode(gtk.SELECTION_MULTIPLE)
 tree_selection.connect("changed", on_Selection_Changed_Tree)
-		
+
 listbut = gtk.Button("Show duplicates", None, False)
 listbut.connect("clicked", list_dups)
 
@@ -162,12 +163,12 @@ v.pack_start(butbox,False,True,0)
 liststore = gtk.ListStore(str)
 #------------------------------------------> append here
 def print_dup_list(duplist, liststore) :
-	global fdup_list
-	duplist = fdup_list
-	liststore.clear()	
-	for elem in duplist :
-		liststore.append([elem])
-	fdup_list = []
+    global fdup_list
+    duplist = fdup_list
+    liststore.clear()
+    for elem in duplist :
+        liststore.append([elem])
+    fdup_list = []
 treeview1 = gtk.TreeView(liststore)
 renderer = gtk.CellRendererText()
 column1 = gtk.TreeViewColumn('abhi', renderer, text=0)
