@@ -21,11 +21,12 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
+import os
+#import subprocess
+import gtk
+import gobject
 import pygtk
 pygtk.require('2.0')
-import gtk, gobject
-import os
-import subprocess
 
 def delete_event(widget, data=None): # Delete and destroy
     return False # events
@@ -39,22 +40,22 @@ def search_path_of_element(elem):
     return tree_elem_path_dict.get(elem)
 
 def append_children(tree, app, path):
-    if(not (os.path.isdir(path))) :
+    if not os.path.isdir(path):
         return False
     files_list = os.listdir(path)
     no_of_files_inlist = len(files_list)
-    for child in range(no_of_files_inlist) :
+    for child in range(no_of_files_inlist):
         x = tree.append(app, [files_list[child]])
         pat = '/%s/%s' %(path, files_list[child])
         tree_elem_path_dict[files_list[child]] = pat
-        append_children(tree,x,pat)
+        append_children(tree, x, pat)
 # This code works!
 x = False
-def toggle_check_button(widget, data = None):
+def toggle_check_button(widget, data=None):
     global x
-    if widget.get_active() == True :
+    if widget.get_active() == True:
         x = True
-    else :
+    else:
         x = False
     #print "this is toggle_Checkbutton x : ", x
 
@@ -82,12 +83,12 @@ for parent in range(no_of_files):
     up = t.append(home_elem, [files[parent]]) # Display the name of home folder
     path = '%s/%s' %(home, files[parent])
     tree_elem_path_dict[files[parent]] = path
-    if(os.path.isdir('%s/%s' %(home, files[parent]))) :
+    if os.path.isdir('%s/%s' %(home, files[parent])):
         append_children(t, up, path)
 
 print(tree_elem_path_dict)
 # Contents of tree end here
-treeview = gtk.TreeView(t)		  # Tree store t is added to a tree view
+treeview = gtk.TreeView(t) # Tree store t is added to a tree view
 tree_column = gtk.TreeViewColumn('Folder') # A coloumn called Folder is added
 treeview.append_column(tree_column) # Coloumn appended to the tree view
 
@@ -103,29 +104,29 @@ treeview.set_reorderable(True)
 adj1 = gtk.Adjustment(0.0, 0.0, 101.0, 0.1, 1.0, 1.0)
 ''''''
 sel_item_path = []
-def on_Selection_Changed_Tree(tree_selection) :
+def on_Selection_Changed_Tree(tree_selection):
     global sel_item_path
     (model, pathlist) = tree_selection.get_selected_rows()
     sel_item_path = []
-    for path in pathlist :
+    for path in pathlist:
         tree_iter = model.get_iter(path)
-        value = model.get_value(tree_iter,0)
+        value = model.get_value(tree_iter, 0)
     sel_item_path.append(search_path_of_element(value))
     print(sel_item_path)
 fdup_list = []
-def list_dups(pathlist) :
+def list_dups(pathlist):
     global x
     global fdup_list
     pathlist = sel_item_path
     fdup_out = ""
-    for path in pathlist :
+    for path in pathlist:
         print("%s" %path)
         print(x)
-        if(os.path.isdir(path)) :
-            if x == False :
+        if os.path.isdir(path):
+            if x == False:
                 fdup_out = os.popen("fdupes %s" %path).read()
                 #fdup_out1 = subprocess.check_output(fdup_out, shell=False)
-            if x == True :
+            if x == True:
                 fdup_out = os.popen("fdupes -r %s" %path).read()
                 #fdup_out1 = subprocess.check_output(fdup_out, shell=False)
         print(type(fdup_out))
@@ -133,18 +134,18 @@ def list_dups(pathlist) :
         fdup_list = fdup_list + fdup_out.split('\n')
 
 sel_list_path = []
-def on_Selection_Changed_List(list_selection) :
+def on_Selection_Changed_List(list_selection):
     global sel_list_path
     (model, pathlist) = list_selection.get_selected_rows()
-    for path in pathlist :
+    for path in pathlist:
         tree_iter = model.get_iter(path)
-        value = model.get_value(tree_iter,0)
+        value = model.get_value(tree_iter, 0)
     sel_list_path.append(value)
     print(sel_list_path)
-def rem_sel_elems(pathlist) :
+def rem_sel_elems(pathlist):
     global sel_list_path
     pathlist = sel_list_path
-    for path in pathlist :
+    for path in pathlist:
         os.system("sudo rm %s" %path)
     liststore.clear()
 ''''''
@@ -158,15 +159,15 @@ listbut.connect("clicked", list_dups)
 butbox = gtk.HButtonBox()
 butbox.add(listbut)
 
-v = gtk.VBox(False,0)
-v.pack_start(butbox,False,True,0)
+v = gtk.VBox(False, 0)
+v.pack_start(butbox, False, True, 0)
 liststore = gtk.ListStore(str)
 #------------------------------------------> append here
-def print_dup_list(duplist, liststore) :
+def print_dup_list(duplist, liststore):
     global fdup_list
     duplist = fdup_list
     liststore.clear()
-    for elem in duplist :
+    for elem in duplist:
         liststore.append([elem])
     fdup_list = []
 treeview1 = gtk.TreeView(liststore)
@@ -195,16 +196,16 @@ scrolled_window = gtk.ScrolledWindow()
 scrolled_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
 scrolled_window.add(treeview)
 vbox3.pack_start(scrolled_window, True, True, 0)
-h = gtk.HBox(False,0)
+h = gtk.HBox(False, 0)
 
-h.pack_start(vbox3,True,True,0)
-h.pack_start(v,False,True,0)
+h.pack_start(vbox3, True, True, 0)
+h.pack_start(v, False, True, 0)
 w.add(h)
 
 h.pack_end(v2, False, True, 0)
 
 w.connect("delete_event", delete_event)
-w.connect("destroy",destroy)
+w.connect("destroy", destroy)
 w.maximize()
 w.show_all()
 gtk.main()
