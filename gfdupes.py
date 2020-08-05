@@ -111,7 +111,7 @@ def on_Selection_Changed_Tree(tree_selection) :
         tree_iter = model.get_iter(path)
         value = model.get_value(tree_iter,0)
     sel_item_path.append(search_path_of_element(value))
-    print sel_item_path
+    print(sel_item_path)
 fdup_list = []
 def list_dups(pathlist) :
     global x
@@ -120,7 +120,7 @@ def list_dups(pathlist) :
     fdup_out = ""
     for path in pathlist :
         print("%s" %path)
-        print x
+        print(x)
         if(os.path.isdir(path)) :
             if x == False :
                 fdup_out = os.popen("fdupes %s" %path).read()
@@ -128,7 +128,7 @@ def list_dups(pathlist) :
             if x == True :
                 fdup_out = os.popen("fdupes -r %s" %path).read()
                 #fdup_out1 = subprocess.check_output(fdup_out, shell=False)
-        print type(fdup_out)
+        print(type(fdup_out))
         #fdup_list = fdup_out.split('\n')
         fdup_list = fdup_list + fdup_out.split('\n')
 
@@ -140,7 +140,7 @@ def on_Selection_Changed_List(list_selection) :
         tree_iter = model.get_iter(path)
         value = model.get_value(tree_iter,0)
     sel_list_path.append(value)
-    print sel_list_path
+    print(sel_list_path)
 def rem_sel_elems(pathlist) :
     global sel_list_path
     pathlist = sel_list_path
