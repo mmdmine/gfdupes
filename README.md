@@ -1,6 +1,8 @@
 # gfdupes
 
-Graphical interface for fdupes (find duplicates) command in linux
+Graphical interface for
+[fdupes](https://github.com/adrianlopezroche/fdupes) (find duplicates)
+command in linux
 
 Currently the tool and `install.sh` have been tested on Kali >=14.04
 only.
@@ -37,3 +39,14 @@ The code is hurriedly written, and we did not take care of many things:
 * The VBox showing the tree structure is very big in size and consumes
   lot of redundant space on the screen. Decrease the size.
 * Package for debian (after all of the above are done)
+
+## New TODOs
+
+* Cross platform (Linux, macOS, Windows, ...) with another GUI library
+  (maybe [Kivy](https://kivy.org))
+* Python 3
+* Fix some issues with fdupes (check if same file via inode?, if md5
+  hash is the same, maybe check also sha512/"diff")
+* Use pylint and coverage
+* Use github actions for code linting etc.
+* Provide packages (AUR, brew, ...) or releases
