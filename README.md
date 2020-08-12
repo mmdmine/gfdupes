@@ -43,10 +43,13 @@ The code is hurriedly written, and we did not take care of many things:
 ## New TODOs
 
 * Cross platform (Linux, macOS, Windows, ...) with another GUI library
-  (maybe [Kivy](https://kivy.org))
+  (maybe [Kivy](https://kivy.org) or
+  [PyQt](https://wiki.python.org/moin/PyQt))
 * Python 3
 * Fix some issues with fdupes (check if same file via inode?, if md5
   hash is the same, maybe check also sha512/"diff")
 * Use pylint and coverage
 * Use github actions for code linting etc.
-* Provide packages (AUR, brew, ...) or releases
+* Provide packages (AUR, brew, ...) and/or releases
+* Requirements via `pip freeze >requirements.txt` and `pip install -r
+  requirements.txt`
