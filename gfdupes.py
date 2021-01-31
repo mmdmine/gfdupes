@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 '''
 * gfdupes - A graphical frontend (and a slight addition) to fdupes, the
   utility to find duplicate files in a directory
