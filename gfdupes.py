@@ -21,6 +21,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
+import sys
 import os
 #import subprocess
 import gtk
@@ -76,7 +77,13 @@ checkbutton.show()
 v2.show()
 t = gtk.TreeStore(str) # Initialize tree store
 
-home = os.path.expanduser("~")
+
+if len(sys.argv) <= 1:
+    print("Need one argument")
+    sys.exit()
+
+home = os.path.expanduser(sys.argv[1])
+#home = os.path.expanduser("~")
 files = os.listdir('%s' %home)
 no_of_files = len(files)
 
