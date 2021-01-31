@@ -216,6 +216,6 @@ h.pack_end(v2, False, True, 0)
 
 w.connect("delete_event", delete_event)
 w.connect("destroy", destroy)
-w.maximize()
+#w.maximize()
 w.show_all()
 gtk.main()
