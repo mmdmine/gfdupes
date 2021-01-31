@@ -8,7 +8,7 @@ license=(unknown)
 url="https://github.com/mmdmine/gfdupes"
 depends=(python pygtk fdupes)
 source=(gfdupes.py)
-md5sums=('53ff7df0873521248d36d2bbcfbc7686')
+md5sums=('61ac3399b5eeb5bfe5ec1785b1d8c943')
 package()
 {
 	install -Dm644 "$srcdir/gfdupes.py" "$pkgdir/usr/bin/gfdupes"
