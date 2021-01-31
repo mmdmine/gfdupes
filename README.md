@@ -4,19 +4,27 @@ Graphical interface for
 [fdupes](https://github.com/adrianlopezroche/fdupes) (find duplicates)
 command in linux
 
-Currently the tool and `install.sh` have been tested on Kali >=14.04
-only.
+`install.sh` have been tested on Kali >=14.04 only.
 
-## How to execute
+## Install on Arch Linux
 
-1. run `install.sh`
-2. run `gfdupes`
+Install `base-devel` first.
+
+`$ makepkg -sfi`
+
+## Usage
+
+`$ gfdupes <root path>`
+
+e.g.
+
+`$ gfdupes /media/Data/archive/`
 
 ## Requirements
 
-* Python (>=2.0)
-* pygtk (>=2.0)
-* gtk
+* python2
+* pygtk (from AUR)
+* gtk2
 * fdupes
 
 ## TO-DO
