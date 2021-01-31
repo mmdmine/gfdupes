@@ -42,13 +42,16 @@ def search_path_of_element(elem):
 def append_children(tree, app, path):
     if not os.path.isdir(path):
         return False
-    files_list = os.listdir(path)
-    no_of_files_inlist = len(files_list)
-    for child in range(no_of_files_inlist):
-        x = tree.append(app, [files_list[child]])
-        pat = '/%s/%s' %(path, files_list[child])
-        tree_elem_path_dict[files_list[child]] = pat
-        append_children(tree, x, pat)
+    try:
+        files_list = os.listdir(path)
+        no_of_files_inlist = len(files_list)
+        for child in range(no_of_files_inlist):
+            x = tree.append(app, [files_list[child]])
+            pat = '/%s/%s' %(path, files_list[child])
+            tree_elem_path_dict[files_list[child]] = pat
+            append_children(tree, x, pat)
+    except:
+        print("WARNING: " + path + " ignored")
 # This code works!
 x = False
 def toggle_check_button(widget, data=None):
