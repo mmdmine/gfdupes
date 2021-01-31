@@ -6,7 +6,7 @@ pkgdesc='A graphical frontend to fdupes, the utility to find duplicate files in 
 arch=(any)
 license=(unknown)
 url="https://github.com/mmdmine/gfdupes"
-depends=(python pygtk gtk3 fdupes)
+depends=(python pygtk fdupes)
 source=(gfdupes.py)
 md5sums=('53ff7df0873521248d36d2bbcfbc7686')
 package()
